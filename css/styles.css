@@ -25,12 +25,14 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
   font-family: var(--font-family);
   color: var(--text-dark);
   line-height: 1.55;
+  overflow-x: hidden;
 }
 
 .container {
@@ -1247,6 +1249,26 @@ body {
     gap: 10px;
   }
 
+  .reviews-summary {
+    padding: 12px 20px;
+    gap: 10px;
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .reviews-summary-score {
+    font-size: 28px;
+  }
+
+  .reviews-summary-stars {
+    font-size: 20px;
+    letter-spacing: 1px;
+  }
+
+  .reviews-summary-count {
+    font-size: 14px;
+  }
+
   .menu-section,
   .catalog-section {
     padding-left: 8px;
@@ -1279,8 +1301,8 @@ body {
   }
 
   .pizza-footer {
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 8px;
     padding-top: 10px;
   }
@@ -1294,9 +1316,10 @@ body {
   }
 
   .btn-order {
+    width: 100%;
+    text-align: center;
     padding: 8px 12px;
     font-size: 13px;
-    white-space: nowrap;
   }
 
   .benefit-title {
