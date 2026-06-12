@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="uk">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Адмін | Ням-Ням</title>
+        <link rel="stylesheet" href="../css/admin.css" />
+    </head>
+    <body>
+
+        <!-- AUTH OVERLAY -->
+        <div class="auth-overlay" id="authOverlay">
+            <div class="auth-box">
+                <h2 class="auth-title">Адмін панель</h2>
+                <p class="auth-sub">Ням-Ням</p>
+                <input class="auth-input" type="text" id="authLogin" placeholder="Логін" autocomplete="username" />
+                <input class="auth-input" type="password" id="authPassword" placeholder="Пароль" autocomplete="current-password" />
+                <button class="auth-btn" id="authBtn">Увійти</button>
+                <p class="auth-error" id="authError"></p>
+            </div>
+        </div>
+
+        <!-- ADMIN PANEL -->
+        <div class="admin-wrap" id="adminWrap">
+
+            <header class="admin-header">
+                <div class="admin-header-left">
+                    <span class="admin-logo">Ням-Ням</span>
+                    <span class="admin-badge">Адмін панель</span>
+                </div>
+                <div class="admin-header-right">
+                    <a href="../catalog.html" class="admin-nav-link" target="_blank">Каталог ↗</a>
+                    <a href="../index.html" class="admin-nav-link" target="_blank">Сайт ↗</a>
+                    <button class="btn-logout" id="logoutBtn">Вийти</button>
+                </div>
+            </header>
+
+            <div class="admin-body">
+
+                <!-- LIST -->
+                <div class="admin-list-panel">
+                    <div class="list-header">
+                        <h2 class="panel-title">Позиції меню</h2>
+                        <button class="btn-add" id="addBtn">+ Додати позицію</button>
+                    </div>
+                    <div class="admin-items" id="adminItems"></div>
+                </div>
+
+                <!-- FORM -->
+                <div class="admin-form-panel" id="formPanel">
+                  <div class="admin-form-inner">
+                    <div class="form-panel-header">
+                        <h2 class="panel-title" id="formTitle">Нова позиція</h2>
+                        <button class="btn-form-close" id="formCloseBtn" aria-label="Закрити">&#215;</button>
+                    </div>
+                    <form class="admin-form" id="itemForm" novalidate>
+                        <input type="hidden" name="editIndex" value="-1" />
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Назва *</label>
+                                <input class="form-input" type="text" name="name" placeholder="Маргарита" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Категорія</label>
+                                <select class="form-input" name="category">
+                                    <option value="pizza">🍕 Піца</option>
+                                    <option value="drink">🥤 Напій</option>
+                                    <option value="dessert">🍰 Десерт</option>
+                                    <option value="snack">🥗 Закуска</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Ціна (грн) *</label>
+                                <input class="form-input" type="number" name="price" placeholder="250" min="1" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Вага (г)</label>
+                                <input class="form-input" type="number" name="weight" placeholder="450" min="1" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Інгредієнти</label>
+                            <textarea class="form-input form-textarea" name="ingredients" placeholder="Соус томатний, сир, ..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Зображення</label>
+                            <div class="img-input-row">
+                                <input class="form-input" type="text" name="image" placeholder="../images/pepperoni.jpg" />
+                                <button class="btn-img-pick" type="button" id="imgPickBtn">Вибрати</button>
+                            </div>
+                            <div class="img-preview-wrap" id="imgPreviewWrap">
+                                <img class="img-preview" id="imgPreview" src="" alt="" />
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn-save" type="submit">Зберегти</button>
+                            <button class="btn-cancel" type="button" id="cancelBtn">Скасувати</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- IMAGE PICKER MODAL -->
+        <div class="img-modal-overlay" id="imgModal">
+            <div class="img-modal-box">
+                <div class="img-modal-head">
+                    <span class="img-modal-title">Додати фото</span>
+                    <button class="img-modal-close" id="imgModalClose">&#215;</button>
+                </div>
+                <div class="img-modal-tabs">
+                    <button class="img-tab-btn active" data-tab="file">З пристрою</button>
+                    <button class="img-tab-btn" data-tab="url">Посилання</button>
+                </div>
+                <div class="img-tab-pane img-tab-hidden" id="imgTabUrl">
+                    <input class="form-input" type="text" id="imgUrlInput" placeholder="https://example.com/photo.jpg" />
+                </div>
+                <div class="img-tab-pane" id="imgTabFile">
+                    <label class="file-drop" id="fileDrop">
+                        <input type="file" accept="image/*" id="imgFileInput" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <span class="file-drop-label">Натисніть або перетягніть фото</span>
+                        <small class="file-drop-hint">JPG, PNG, WEBP</small>
+                    </label>
+                </div>
+                <div class="crop-area img-tab-hidden" id="cropArea">
+                    <div class="crop-wrap" id="cropWrap">
+                        <img id="cropImg" src="" alt="" draggable="false" />
+                        <div class="crop-box" id="cropBox"></div>
+                    </div>
+                    <div class="crop-controls">
+                        <button class="crop-ctrl-btn" id="cropMinus">&#8722;</button>
+                        <input type="range" class="crop-slider" id="cropSlider" min="15" max="100" value="80" />
+                        <button class="crop-ctrl-btn" id="cropPlus">&#43;</button>
+                    </div>
+                    <p class="crop-hint">Переміщайте рамку · Змінюйте розмір повзунком</p>
+                </div>
+                <div class="img-modal-actions">
+                    <button class="btn-save" type="button" id="imgModalApply">Застосувати</button>
+                    <button class="btn-cancel" type="button" id="imgModalCancel">Скасувати</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="../js/admin.js"></script>
+    </body>
+</html>

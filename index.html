@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="uk">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Ням-Ням - найкраща піцерія в Помічні. Якісні інгредієнти, швидке приготування, піца на виніс."
+        />
+        <meta property="og:type"        content="website" />
+        <meta property="og:title"       content="Ням-Ням | Піцерія в Помічні" />
+        <meta property="og:description" content="Ням-Ням - найкраща піцерія в Помічні. Якісні інгредієнти, швидке приготування, піца на виніс." />
+        <meta property="og:image"       content="images/hero.jpg" />
+        <title>Ням-Ням | Піцерія в Помічні</title>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <!-- HEADER -->
+        <header class="header">
+            <a href="#home" class="header-logo">
+                <img src="images/logo.png" class="logo-img" alt="Ням-Ням" />
+                <span class="logo-text">Ням-Ням</span>
+            </a>
+            <nav class="header-nav">
+                <a href="catalog.html" class="nav-link">Меню</a>
+                <a href="#reviews" class="nav-link">Відгуки</a>
+                <a href="#contacts" class="nav-link">Контакти</a>
+                <a href="tel:+380501350651" class="btn-call">Замовити</a>
+            </nav>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </header>
+
+        <!-- HERO -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1 class="hero-title">Гарячі піци прямо з печі</h1>
+                <p class="hero-subtitle">Якісні інгредієнти &bull; Свіжість гарантована &bull; Готово за 15 хвилин</p>
+                <div class="hero-buttons">
+                    <a href="#menu" class="btn-primary">Переглянути меню</a>
+                    <a href="tel:+380501350651" class="btn-secondary">Подзвонити</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BENEFITS -->
+        <section class="benefits-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Чому вибирають Ням-Ням</h2>
+                    <p class="section-subtitle">Найкращі інгредієнти та швидкість приготування</p>
+                </div>
+
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <span class="benefit-num">01</span>
+                        <h3 class="benefit-title">Якісні інгредієнти</h3>
+                        <p class="benefit-text">
+                            Використовуємо тільки свіжі, натуральні продукти від перевірених постачальників
+                        </p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <span class="benefit-num">02</span>
+                        <h3 class="benefit-title">Швидке приготування</h3>
+                        <p class="benefit-text">Ваша піца буде готова за 10-15 хвилин завдяки нашій сучасній печі</p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <span class="benefit-num">03</span>
+                        <h3 class="benefit-title">Домашня атмосфера</h3>
+                        <p class="benefit-text">
+                            Готуємо з душею, як для своєї родини. Кожна піца - це маленький шедевр
+                        </p>
+                    </div>
+
+                    <div class="benefit-card">
+                        <span class="benefit-num">04</span>
+                        <h3 class="benefit-title">Вигідні ціни</h3>
+                        <p class="benefit-text">
+                            Найкращі пропозиції без надбавок. Задоволення, що подобається вашому гаманцю
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MENU -->
+        <section class="menu-section" id="menu">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Наше меню</h2>
+                    <p class="section-subtitle">6 найкращих піц для вас</p>
+                </div>
+
+                <div class="menu-grid" data-category="pizza" data-limit="6"></div>
+                <div class="menu-cta">
+                    <a href="catalog.html" class="btn-primary">Все меню</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- REVIEWS -->
+        <section class="reviews-section" id="reviews">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Що говорять наші клієнти</h2>
+                    <p class="section-subtitle">Справжні відгуки від людей, які люблять нашу піцу</p>
+                    <div class="reviews-summary">
+                        <span class="reviews-summary-score">4.7</span>
+                        <div class="reviews-summary-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <span class="reviews-summary-count">126 відгуків на Google Maps</span>
+                    </div>
+                </div>
+
+                <div class="reviews-grid">
+                    <div class="review-card">
+                        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+                        <p class="review-text">
+                            Піца тут справжня — тонке тісто, багато сиру та начинки, не те що в інших місцях. Так, ціна трохи вища, але воно того варте. На 100% найкраща піца в місті!
+                        </p>
+                        <p class="review-author">Вениамин Гавриленко</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <p class="review-text">
+                            Смачно та недорого — саме цими словами можна описати «Ням-Ням». Знаходиться в центрі міста, і повз просто неможливо пройти: навколо завжди стоїть запах свіжоспеченої піци, а біля входу зазвичай чекає кілька компаній. На свята черга більша, але воно того варте!
+                        </p>
+                        <p class="review-author">Eer By</p>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <p class="review-text">
+                            Смачна піца просто з печі. Начинка класна — не жаліють. Єдине що прикро — живу далеко, тож не можу приходити так часто, як хотілося б.
+                        </p>
+                        <p class="review-author">Денис Євдокімов</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACTS -->
+        <section class="contacts-section" id="contacts">
+            <div class="container">
+                <h2 class="section-title section-title-light">Зв'яжіться з нами</h2>
+                <p class="section-subtitle section-subtitle-light">
+                    Подзвоніть або напишіть у Viber - приготуємо вашу піцу за 15 хвилин
+                </p>
+
+                <div class="contacts-grid">
+                    <div class="contacts-info">
+                        <div class="info-block">
+                            <div class="info-label">Адреса</div>
+                            <div class="info-value">
+                                вул. Перемоги, 62<br />
+                                Помічна, Кіровоградська область<br />
+                                27030
+                            </div>
+                        </div>
+
+                        <div class="info-block">
+                            <div class="info-label">Телефон</div>
+                            <div class="info-value">
+                                <a href="tel:+380501350651">+380 50 135 06 51</a>
+                            </div>
+                        </div>
+
+                        <div class="schedule">
+                            <div class="schedule-title">Графік роботи</div>
+                            <div class="schedule-day">
+                                <span class="day-name">Понеділок - П'ятниця</span>
+                                <span class="day-time">11:00 - 22:00</span>
+                            </div>
+                            <div class="schedule-day">
+                                <span class="day-name">Субота - Неділя</span>
+                                <span class="day-time">11:00 - 22:00</span>
+                            </div>
+                            <div class="schedule-status" id="openStatus">Перевірка статусу...</div>
+                        </div>
+
+                        <div class="socials">
+                            <a
+                                href="https://www.instagram.com/niamniampizzapomichna"
+                                class="social-link"
+                                title="Instagram"
+                                target="_blank"
+                                rel="noopener"
+                                ><img src="images/instagram.png" alt="Instagram"
+                            /></a>
+                            <a
+                                href="https://www.facebook.com/OmNomnompizza/"
+                                class="social-link"
+                                title="Facebook"
+                                target="_blank"
+                                rel="noopener"
+                                ><img src="images/facebook.png" alt="Facebook"
+                            /></a>
+                            <a href="viber://chat?number=%2B380501350651" class="social-link" title="Viber"
+                                ><img src="images/viber.png" alt="Viber"
+                            /></a>
+                        </div>
+                    </div>
+
+                    <div class="order-cta">
+                        <h3 class="cta-title">Готові замовити?</h3>
+                        <p class="cta-text">
+                            Зателефонуйте нам або напишіть у Viber. Назвіть бажану піцу - ми приготуємо її та підготуємо
+                            до виносу.
+                        </p>
+                        <div class="cta-buttons">
+                            <a href="tel:+380501350651" class="cta-btn cta-btn-call">Подзвонити</a>
+                            <a href="viber://chat?number=%2B380501350651" class="cta-btn cta-btn-viber"
+                                >Написати у Viber</a
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer" id="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-col">
+                        <h3>Ням-Ням</h3>
+                        <p>Найкраща піца в Помічні. Готуємо з якістю, готуємо з душею. Смачних вам піц!</p>
+                        <div class="footer-socials">
+                            <a
+                                href="https://www.instagram.com/niamniampizzapomichna"
+                                class="social-icon"
+                                title="Instagram"
+                                target="_blank"
+                                rel="noopener"
+                                ><img src="images/instagram.png" alt="Instagram"
+                            /></a>
+                            <a
+                                href="https://www.facebook.com/OmNomnompizza/"
+                                class="social-icon"
+                                title="Facebook"
+                                target="_blank"
+                                rel="noopener"
+                                ><img src="images/facebook.png" alt="Facebook"
+                            /></a>
+                            <a href="viber://chat?number=%2B380501350651" class="social-icon" title="Viber"
+                                ><img src="images/viber.png" alt="Viber"
+                            /></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-col">
+                        <h3>Навігація</h3>
+                        <ul class="footer-links">
+                            <li><a href="#menu">Наше меню</a></li>
+                            <li><a href="#reviews">Відгуки</a></li>
+                            <li><a href="#contacts">Контакти</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h3>Контакти</h3>
+                        <ul class="footer-contact">
+                            <li>
+                                <strong>Телефон:</strong><br />
+                                <a href="tel:+380501350651">+380 50 135 06 51</a>
+                            </li>
+                            <li>
+                                <strong>Адреса:</strong><br />
+                                вул. Перемоги, 62, Помічна, 27030
+                            </li>
+                            <li>
+                                <strong>Режим роботи:</strong><br />
+                                Щодня 11:00 - 22:00
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-divider"></div>
+
+                <div class="footer-bottom">
+                    <div class="footer-copyright" id="copyright">
+                        Copyright &copy; 2025 Ням-Ням. Всі права захищені.
+                    </div>
+                    <div class="footer-legal">
+                        <a href="#">Політика приватності</a>
+                        <a href="#">Умови використання</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="js/script.js"></script>
+    </body>
+</html>

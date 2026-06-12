@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="uk">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Повний каталог піц Ням-Ням — 6 рецептів зі свіжих інгредієнтів. Замовляйте у Помічні."
+        />
+        <meta property="og:type"        content="website" />
+        <meta property="og:title"       content="Меню | Ням-Ням" />
+        <meta property="og:description" content="Повний каталог піц Ням-Ням — 6 рецептів зі свіжих інгредієнтів." />
+        <meta property="og:image"       content="images/hero.jpg" />
+        <title>Меню | Ням-Ням</title>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <!-- HEADER -->
+        <header class="header">
+            <a href="index.html" class="header-logo">
+                <img src="images/logo.png" class="logo-img" alt="Ням-Ням" />
+                <span class="logo-text">Ням-Ням</span>
+            </a>
+            <nav class="header-nav">
+                <a href="catalog.html" class="nav-link nav-link-active">Меню</a>
+                <a href="index.html#reviews" class="nav-link">Відгуки</a>
+                <a href="index.html#contacts" class="nav-link">Контакти</a>
+                <a href="tel:+380501350651" class="btn-call">Замовити</a>
+            </nav>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </header>
+
+        <!-- PAGE HERO -->
+        <section class="page-hero">
+            <div class="page-hero-content">
+                <nav class="breadcrumb" aria-label="Навігація">
+                    <a href="index.html">Головна</a>
+                    <span aria-hidden="true">→</span>
+                    <span>Меню</span>
+                </nav>
+                <h1 class="page-hero-title">Наше меню</h1>
+                <p class="page-hero-subtitle">Готуємо з любов'ю — свіжі інгредієнти, хрустке тісто</p>
+            </div>
+        </section>
+
+        <!-- CATALOG -->
+        <section class="catalog-section">
+            <div class="container">
+                <div class="catalog-layout">
+                    <aside class="catalog-sidebar">
+                        <div class="catalog-filter">
+                            <button class="filter-btn filter-btn-active" data-category="all">Всі</button>
+                            <button class="filter-btn" data-category="pizza">Піци</button>
+                            <button class="filter-btn" data-category="drink">Напої</button>
+                            <button class="filter-btn" data-category="dessert">Десерти</button>
+                            <button class="filter-btn" data-category="snack">Закуски</button>
+                        </div>
+                    </aside>
+                    <div class="catalog-content">
+                        <div class="menu-grid"></div>
+                        <div class="catalog-empty">Незабаром тут з'являться нові позиції</div>
+                        <div class="catalog-pagination" id="catalogPagination"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer" id="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-col">
+                        <h3>Ням-Ням</h3>
+                        <p>Найкраща піца в Помічні. Готуємо з якістю, готуємо з душею. Смачних вам піц!</p>
+                        <div class="footer-socials">
+                            <a
+                                href="https://www.instagram.com/niamniampizzapomichna"
+                                class="social-icon"
+                                title="Instagram"
+                                target="_blank"
+                                rel="noopener"
+                                ><img src="images/instagram.png" alt="Instagram"
+                            /></a>
+                            <a
+                                href="https://www.facebook.com/OmNomnompizza/"
+                                class="social-icon"
+                                title="Facebook"
+                                target="_blank"
+                                rel="noopener"
+                                ><img src="images/facebook.png" alt="Facebook"
+                            /></a>
+                            <a href="viber://chat?number=%2B380501350651" class="social-icon" title="Viber"
+                                ><img src="images/viber.png" alt="Viber"
+                            /></a>
+                        </div>
+                    </div>
+
+                    <div class="footer-col">
+                        <h3>Навігація</h3>
+                        <ul class="footer-links">
+                            <li><a href="catalog.html">Наше меню</a></li>
+                            <li><a href="index.html#reviews">Відгуки</a></li>
+                            <li><a href="index.html#contacts">Контакти</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h3>Контакти</h3>
+                        <ul class="footer-contact">
+                            <li>
+                                <strong>Телефон:</strong><br />
+                                <a href="tel:+380501350651">+380 50 135 06 51</a>
+                            </li>
+                            <li>
+                                <strong>Адреса:</strong><br />
+                                вул. Перемоги, 62, Помічна, 27030
+                            </li>
+                            <li>
+                                <strong>Режим роботи:</strong><br />
+                                Щодня 11:00 - 22:00
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-divider"></div>
+
+                <div class="footer-bottom">
+                    <div class="footer-copyright" id="copyright">
+                        Copyright &copy; 2025 Ням-Ням. Всі права захищені.
+                    </div>
+                    <div class="footer-legal">
+                        <a href="#">Політика приватності</a>
+                        <a href="#">Умови використання</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="js/script.js"></script>
+    </body>
+</html>
