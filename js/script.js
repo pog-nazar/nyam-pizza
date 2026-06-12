@@ -71,6 +71,31 @@ document.addEventListener("DOMContentLoaded", function () {
   initOpenStatus();
   initCopyright();
   initScrollAnimations();
+  initIngredientsToggle();
+});
+
+/* Expand/collapse ingredients on mobile — hides toggle when text fits */
+function initIngredientsToggle() {
+  if (!window.matchMedia("(max-width: 768px)").matches) return;
+  requestAnimationFrame(function () {
+    document.querySelectorAll(".ingredients-wrap").forEach(function (wrap) {
+      var text = wrap.querySelector(".pizza-ingredients");
+      var btn  = wrap.querySelector(".ingredients-toggle");
+      if (!btn || !text) return;
+      if (text.scrollHeight <= text.clientHeight + 2) btn.style.display = "none";
+    });
+  });
+}
+
+/* Event delegation — works for all cards including paginated */
+document.addEventListener("click", function (e) {
+  var btn = e.target.closest(".ingredients-toggle");
+  if (!btn) return;
+  var wrap = btn.closest(".ingredients-wrap");
+  if (!wrap) return;
+  var expanded = wrap.classList.toggle("expanded");
+  btn.textContent = expanded ? "згорнути ▴" : "ще ▾";
+  e.stopPropagation();
 });
 
 function getMenuData() {
@@ -104,7 +129,10 @@ function initMenu() {
       '<img src="' + pizza.image + '" class="pizza-image" alt="' + pizza.name + '" loading="lazy">' +
       '<div class="pizza-content">' +
         '<h3 class="pizza-title">' + pizza.name + '</h3>' +
-        '<p class="pizza-ingredients">' + pizza.ingredients + '</p>' +
+        '<div class="ingredients-wrap">' +
+          '<p class="pizza-ingredients">' + pizza.ingredients + '</p>' +
+          '<button class="ingredients-toggle" type="button">ще ▾</button>' +
+        '</div>' +
         '<div class="pizza-footer">' +
           '<div class="pizza-price">' + pizza.price +
             '<span class="pizza-price-currency">грн</span>' +

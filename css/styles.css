@@ -437,6 +437,10 @@ body {
   margin-bottom: 20px;
 }
 
+.ingredients-toggle {
+  display: none; /* показується тільки на мобільному через медіа-запит */
+}
+
 .pizza-footer {
   display: flex;
   justify-content: space-between;
@@ -1293,11 +1297,36 @@ body {
   .pizza-ingredients {
     font-size: 12px;
     line-height: 1.5;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  .ingredients-wrap {
+    margin-bottom: 10px;
+  }
+
+  .ingredients-wrap.expanded .pizza-ingredients {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+  }
+
+  .ingredients-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    padding: 2px 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary-color);
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    opacity: 0.8;
   }
 
   .pizza-footer {
