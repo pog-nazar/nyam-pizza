@@ -1,5 +1,5 @@
 var ADMIN_LOGIN    = "admin";  /* ← змініть логін */
-var ADMIN_PASSWORD = "admin";  /* ← змініть пароль */
+var ADMIN_PASSWORD = "iW0gmE6xaT8cvF1";
 var STORAGE_KEY    = "nyam-menu";
 
 var PIZZAS = [
@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("logoutBtn").addEventListener("click", function () {
     sessionStorage.removeItem("admin-auth");
+    if (window.auth) window.auth.signOut();
     location.reload();
   });
 
@@ -73,36 +74,86 @@ document.addEventListener("DOMContentLoaded", function () {
   initImgModal();
 });
 
+/* FIREBASE_ADMIN_EMAIL — пошта адміна у Firebase Authentication */
+var FIREBASE_ADMIN_EMAIL = "nazar8pog@gmail.com";
+
 function tryLogin() {
   var login    = document.getElementById("authLogin").value.trim();
   var password = document.getElementById("authPassword").value;
+  var errEl    = document.getElementById("authError");
 
-  if (login === ADMIN_LOGIN && password === ADMIN_PASSWORD) {
+  if (login !== ADMIN_LOGIN || password !== ADMIN_PASSWORD) {
+    errEl.textContent = "Невірний логін або пароль";
+    document.getElementById("authPassword").value = "";
+    return;
+  }
+
+  errEl.textContent = "";
+
+  /* Мовчазна авторизація у Firebase для права запису в Firestore */
+  if (window.auth) {
+    window.auth.signInWithEmailAndPassword(FIREBASE_ADMIN_EMAIL, password)
+      .catch(function () {
+        /* Firebase Auth не налаштований або інший пароль — продовжуємо без нього */
+      })
+      .finally(function () {
+        sessionStorage.setItem("admin-auth", "1");
+        showPanel();
+      });
+  } else {
     sessionStorage.setItem("admin-auth", "1");
     showPanel();
-  } else {
-    document.getElementById("authError").textContent = "Невірний логін або пароль";
-    document.getElementById("authPassword").value = "";
   }
 }
 
 function showPanel() {
   document.getElementById("authOverlay").style.display = "none";
   document.getElementById("adminWrap").style.display   = "flex";
-  renderItems();
+  loadMenuData(renderItems);
 }
 
 /* ── DATA ─────────────────────────────────────────────────── */
+
+/* In-memory cache — populated once from Firestore on panel open */
+var _menuCache = null;
+
 function getData() {
-  var stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    try { return JSON.parse(stored); } catch (e) {}
+  return _menuCache !== null
+    ? _menuCache
+    : JSON.parse(JSON.stringify(PIZZAS));
+}
+
+/* Load from Firestore → localStorage → PIZZAS (async, runs once) */
+function loadMenuData(callback) {
+  function fromFallback() {
+    var stored = localStorage.getItem(STORAGE_KEY);
+    _menuCache = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(PIZZAS));
+    callback();
   }
-  return JSON.parse(JSON.stringify(PIZZAS));
+  if (window.db) {
+    window.db.collection("menu").doc("items").get()
+      .then(function (doc) {
+        if (doc.exists && Array.isArray(doc.data().data)) {
+          _menuCache = doc.data().data;
+        } else {
+          var stored = localStorage.getItem(STORAGE_KEY);
+          _menuCache = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(PIZZAS));
+        }
+        callback();
+      })
+      .catch(fromFallback);
+  } else {
+    fromFallback();
+  }
 }
 
 function saveData(data) {
+  _menuCache = data;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  if (window.db) {
+    window.db.collection("menu").doc("items").set({ data: data })
+      .catch(function (e) { console.error("Firestore save error:", e); });
+  }
 }
 
 /* ── RENDER LIST ──────────────────────────────────────────── */

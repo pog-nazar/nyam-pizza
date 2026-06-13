@@ -63,15 +63,16 @@ const CONFIG = {
    ІНІЦІАЛІЗАЦІЯ
    ============================================================ */
 document.addEventListener("DOMContentLoaded", function () {
-  initMenu();
-  initCatalogFilter();
+  initMenu().then(function () {
+    initCatalogFilter();
+    initIngredientsToggle();
+  });
   initBurger();
   initScrollHeader();
   initOrderButtons();
   initOpenStatus();
   initCopyright();
   initScrollAnimations();
-  initIngredientsToggle();
 });
 
 /* Expand/collapse ingredients on mobile — hides toggle when text fits */
@@ -98,51 +99,61 @@ document.addEventListener("click", function (e) {
   e.stopPropagation();
 });
 
+/* Reads menu from Firestore → localStorage → PIZZAS. Returns Promise. */
 function getMenuData() {
-  var stored = localStorage.getItem("nyam-menu");
-  if (stored) {
-    try { return JSON.parse(stored); } catch (e) {}
+  if (window.db) {
+    return window.db.collection("menu").doc("items").get()
+      .then(function (doc) {
+        if (doc.exists && Array.isArray(doc.data().data)) return doc.data().data;
+        var stored = localStorage.getItem("nyam-menu");
+        return stored ? JSON.parse(stored) : PIZZAS;
+      })
+      .catch(function () {
+        var stored = localStorage.getItem("nyam-menu");
+        return stored ? JSON.parse(stored) : PIZZAS;
+      });
   }
-  return PIZZAS;
+  var stored = localStorage.getItem("nyam-menu");
+  return Promise.resolve(stored ? JSON.parse(stored) : PIZZAS);
 }
 
 function initMenu() {
   var grid = document.querySelector(".menu-grid");
-  if (!grid) return;
+  if (!grid) return Promise.resolve();
 
-  var items = getMenuData();
+  return getMenuData().then(function (items) {
+    var cat = grid.dataset.category;
+    if (cat) items = items.filter(function (p) { return p.category === cat; });
 
-  var cat = grid.dataset.category;
-  if (cat) items = items.filter(function (p) { return p.category === cat; });
+    var limit = Number(grid.dataset.limit);
+    if (limit && items.length > limit) {
+      items = items.slice().sort(function () { return Math.random() - 0.5; }).slice(0, limit);
+    }
 
-  var limit = Number(grid.dataset.limit);
-  if (limit && items.length > limit) {
-    items = items.slice().sort(function () { return Math.random() - 0.5; }).slice(0, limit);
-  }
-
-  items.forEach(function (pizza, i) {
-    var card = document.createElement("div");
-    card.className       = "pizza-card";
-    card.dataset.index   = i;
-    card.dataset.category = pizza.category;
-    card.innerHTML =
-      '<img src="' + pizza.image + '" class="pizza-image" alt="' + pizza.name + '" loading="lazy">' +
-      '<div class="pizza-content">' +
-        '<h3 class="pizza-title">' + pizza.name + '</h3>' +
-        '<div class="ingredients-wrap">' +
-          '<p class="pizza-ingredients">' + pizza.ingredients + '</p>' +
-          '<button class="ingredients-toggle" type="button">ще ▾</button>' +
-        '</div>' +
-        '<div class="pizza-footer">' +
-          '<div class="pizza-price">' + pizza.price +
-            '<span class="pizza-price-currency">грн</span>' +
+    items.forEach(function (pizza, i) {
+      var card = document.createElement("div");
+      card.className        = "pizza-card";
+      card.dataset.index    = i;
+      card.dataset.category = pizza.category;
+      card.innerHTML =
+        '<img src="' + pizza.image + '" class="pizza-image" alt="' + pizza.name + '" loading="lazy">' +
+        '<div class="pizza-content">' +
+          '<h3 class="pizza-title">' + pizza.name + '</h3>' +
+          '<div class="ingredients-wrap">' +
+            '<p class="pizza-ingredients">' + pizza.ingredients + '</p>' +
+            '<button class="ingredients-toggle" type="button">ще ▾</button>' +
           '</div>' +
-          '<button class="btn-order" data-pizza="' + pizza.name + '" data-price="' + pizza.price + '">' +
-            'Замовити' +
-          '</button>' +
-        '</div>' +
-      '</div>';
-    grid.appendChild(card);
+          '<div class="pizza-footer">' +
+            '<div class="pizza-price">' + pizza.price +
+              '<span class="pizza-price-currency">грн</span>' +
+            '</div>' +
+            '<button class="btn-order" data-pizza="' + pizza.name + '" data-price="' + pizza.price + '">' +
+              'Замовити' +
+            '</button>' +
+          '</div>' +
+        '</div>';
+      grid.appendChild(card);
+    });
   });
 }
 
