@@ -1,5 +1,5 @@
-var ADMIN_LOGIN    = "admin";  /* ← змініть логін */
-var ADMIN_PASSWORD = "iW0gmE6xaT8cvF1";
+var ADMIN_LOGIN         = "admin";
+var ADMIN_PASSWORD_HASH = "aaeb3a8e8907c67fa824ae78369b15e554143ef74356059e9f82ad59e316407a";
 var STORAGE_KEY    = "nyam-menu";
 
 var PIZZAS = [
@@ -82,28 +82,34 @@ function tryLogin() {
   var password = document.getElementById("authPassword").value;
   var errEl    = document.getElementById("authError");
 
-  if (login !== ADMIN_LOGIN || password !== ADMIN_PASSWORD) {
-    errEl.textContent = "Невірний логін або пароль";
-    document.getElementById("authPassword").value = "";
-    return;
-  }
+  /* Hash the entered password with SHA-256, then compare */
+  var encoder = new TextEncoder();
+  crypto.subtle.digest("SHA-256", encoder.encode(password)).then(function (buf) {
+    var hash = Array.from(new Uint8Array(buf))
+      .map(function (b) { return b.toString(16).padStart(2, "0"); })
+      .join("");
 
-  errEl.textContent = "";
+    if (login !== ADMIN_LOGIN || hash !== ADMIN_PASSWORD_HASH) {
+      errEl.textContent = "Невірний логін або пароль";
+      document.getElementById("authPassword").value = "";
+      return;
+    }
 
-  /* Мовчазна авторизація у Firebase для права запису в Firestore */
-  if (window.auth) {
-    window.auth.signInWithEmailAndPassword(FIREBASE_ADMIN_EMAIL, password)
-      .catch(function () {
-        /* Firebase Auth не налаштований або інший пароль — продовжуємо без нього */
-      })
-      .finally(function () {
-        sessionStorage.setItem("admin-auth", "1");
-        showPanel();
-      });
-  } else {
-    sessionStorage.setItem("admin-auth", "1");
-    showPanel();
-  }
+    errEl.textContent = "";
+
+    /* Мовчазна авторизація у Firebase для права запису в Firestore */
+    if (window.auth) {
+      window.auth.signInWithEmailAndPassword(FIREBASE_ADMIN_EMAIL, password)
+        .catch(function () { /* Firebase Auth недоступний — продовжуємо */ })
+        .finally(function () {
+          sessionStorage.setItem("admin-auth", "1");
+          showPanel();
+        });
+    } else {
+      sessionStorage.setItem("admin-auth", "1");
+      showPanel();
+    }
+  });
 }
 
 function showPanel() {
