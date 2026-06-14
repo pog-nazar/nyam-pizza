@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 
-Sitemap: https://nyam-pizza.biz.ua/sitemap.xml
+Sitemap: https://nyam-pizza-pomichna.netlify.app/sitemap.xml
