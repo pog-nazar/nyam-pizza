@@ -72,7 +72,7 @@ body {
 .reviews-summary-score {
   font-size: 36px;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--primary-color);
   line-height: 1;
 }
 
@@ -539,7 +539,7 @@ body {
 
 .review-author {
   font-size: 15px;
-  color: var(--primary);
+  color: var(--primary-color);
   font-weight: 600;
   margin-top: auto;
 }
@@ -1029,14 +1029,14 @@ body {
 }
 
 .pg-btn:hover:not(:disabled) {
-  border-color: var(--primary);
-  color: var(--primary);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
   background: #F0FDF4;
 }
 
 .pg-btn.pg-active {
-  background: var(--primary);
-  border-color: var(--primary);
+  background: var(--primary-color);
+  border-color: var(--primary-color);
   color: white;
 }
 

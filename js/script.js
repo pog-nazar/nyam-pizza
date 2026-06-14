@@ -51,7 +51,7 @@ const CONFIG = {
 
   socials: {
     instagram:   "https://www.instagram.com/niamniampizzapomichna",
-    facebook:    "https://www.facebook.com/OmNomnomimages/pizza/",
+    facebook:    "https://www.facebook.com/OmNomnompizza/",
     viberNumber: "+380501350651",
   },
 
@@ -80,6 +80,8 @@ function initIngredientsToggle() {
   if (!window.matchMedia("(max-width: 768px)").matches) return;
   requestAnimationFrame(function () {
     document.querySelectorAll(".ingredients-wrap").forEach(function (wrap) {
+      var card = wrap.closest(".pizza-card");
+      if (card && card.style.display === "none") return;
       var text = wrap.querySelector(".pizza-ingredients");
       var btn  = wrap.querySelector(".ingredients-toggle");
       if (!btn || !text) return;
@@ -283,7 +285,9 @@ function initScrollHeader() {
 
   window.addEventListener("scroll", function () {
     var current = window.pageYOffset || document.documentElement.scrollTop;
-    if (current > 100) {
+    if (current <= 100) {
+      header.style.transform = "translateY(0)";
+    } else {
       header.style.transform = current > lastScrollY
         ? "translateY(-100%)"
         : "translateY(0)";
