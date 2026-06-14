@@ -19,12 +19,12 @@ const PIZZAS = [
   { name: "Груша-Камамбер",   ingredients: "Соус вершковий, груша, камамбер, волоські горіхи, мед, руккола",         price: 320, weight: 490, image: "images/pizza/pear_camembert.jpg",  category: "pizza" },
   { name: "Морська",          ingredients: "Соус вершковий, креветки, мідії, кальмар, часник, моцарела",             price: 320, weight: 540, image: "images/pizza/seafood.jpg",         category: "pizza" },
   { name: "Ням-Ням",          ingredients: "Авторський соус, бекон, курка, гриби, болгарський перець, моцарела",     price: 295, weight: 550, image: "images/pizza/yum_yum.jpg",         category: "pizza" },
-  /* Напої */
-  { name: "Coca-Cola",       ingredients: "Газований напій",                                           price:  45, weight: 500, image: "",                        category: "drink"   },
-  { name: "Sprite",          ingredients: "Газований напій",                                           price:  45, weight: 500, image: "",                        category: "drink"   },
-  { name: "Fanta",           ingredients: "Газований напій",                                           price:  45, weight: 500, image: "",                        category: "drink"   },
-  { name: "Вода негазована", ingredients: "Мінеральна вода",                                           price:  30, weight: 500, image: "",                        category: "drink"   },
-  { name: "Сік апельсиновий",ingredients: "100% натуральний сік",                                      price:  55, weight: 250, image: "",                        category: "drink"   },
+  /* Холодні напої */
+  { name: "Coca-Cola",       ingredients: "Газований напій",                                           price:  45, weight: 500, image: "",                        category: "cold-drink"   },
+  { name: "Sprite",          ingredients: "Газований напій",                                           price:  45, weight: 500, image: "",                        category: "cold-drink"   },
+  { name: "Fanta",           ingredients: "Газований напій",                                           price:  45, weight: 500, image: "",                        category: "cold-drink"   },
+  { name: "Вода негазована", ingredients: "Мінеральна вода",                                           price:  30, weight: 500, image: "",                        category: "cold-drink"   },
+  { name: "Сік апельсиновий",ingredients: "100% натуральний сік",                                      price:  55, weight: 250, image: "",                        category: "cold-drink"   },
   /* Десерти */
   { name: "Тірамісу",        ingredients: "Маскарпоне, савоярді, кава, какао",                         price:  85, weight: 150, image: "",                        category: "dessert" },
   { name: "Чізкейк",         ingredients: "Вершковий сир, печиво, вершки, ягоди",                      price:  90, weight: 160, image: "",                        category: "dessert" },
