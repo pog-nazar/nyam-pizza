@@ -50,6 +50,17 @@ var CATEGORY_LABELS = {
 /* ── AUTH ─────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", function () {
   if (sessionStorage.getItem("admin-auth") === "1") {
+    /* Firebase SDK зберігає токен автоматично — чекаємо поки відновить сесію */
+    if (window.auth) {
+      window.auth.onAuthStateChanged(function (user) {
+        if (!user) {
+          /* Токен протух або Auth не спрацював — просимо заново ввести пароль */
+          sessionStorage.removeItem("admin-auth");
+          document.getElementById("authOverlay").style.display = "";
+          document.getElementById("adminWrap").style.display   = "none";
+        }
+      });
+    }
     showPanel();
   }
 
@@ -159,8 +170,28 @@ function saveData(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   if (window.db) {
     window.db.collection("menu").doc("items").set({ data: data })
-      .catch(function (e) { console.error("Firestore save error:", e); });
+      .then(function () { showToast("Збережено ✓", false); })
+      .catch(function (e) {
+        console.error("Firestore save error:", e);
+        showToast("Помилка збереження: " + (e.code || e.message), true);
+      });
   }
+}
+
+function showToast(msg, isError) {
+  var t = document.getElementById("adminToast");
+  if (!t) {
+    t = document.createElement("div");
+    t.id = "adminToast";
+    t.style.cssText = "position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:8px;font-size:14px;z-index:9999;transition:opacity .3s";
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.background = isError ? "#ef4444" : "#22c55e";
+  t.style.color = "#fff";
+  t.style.opacity = "1";
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function () { t.style.opacity = "0"; }, 3000);
 }
 
 /* ── RENDER LIST ──────────────────────────────────────────── */
