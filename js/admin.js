@@ -531,14 +531,15 @@ function initImgModal() {
     var cx = (cropPct.x / 100) * nw, cy = (cropPct.y / 100) * nh;
     var cw = (cropPct.w / 100) * nw, ch = (cropPct.h / 100) * nh;
     try {
-      /* Обмежуємо вихідний розмір до 900px по ширині — Firestore має ліміт 1MB на документ */
-      var MAX_W = 900;
+      /* Обмежуємо до 600px — карточки ~400px, запас для 1.5x екранів.
+         Весь документ Firestore (всі позиції) не може перевищити 1MB. */
+      var MAX_W = 600;
       var outW  = Math.min(Math.round(cw), MAX_W);
       var outH  = Math.round(outW * ch / cw);
       var canvas = document.createElement("canvas");
       canvas.width = outW; canvas.height = outH;
       canvas.getContext("2d").drawImage(cropImg, cx, cy, cw, ch, 0, 0, outW, outH);
-      return canvas.toDataURL("image/jpeg", 0.82);
+      return canvas.toDataURL("image/jpeg", 0.78);
     } catch (e) { return pending; }
   }
 
@@ -611,9 +612,12 @@ function initImgModal() {
     btn.addEventListener("click", function () { setTab(this.dataset.tab); });
   });
 
+  var _urlTimer;
   urlInput.addEventListener("input", function () {
     var src = this.value.trim();
-    if (src) showCrop(src); else cropArea.classList.add("img-tab-hidden");
+    clearTimeout(_urlTimer);
+    if (!src) { cropArea.classList.add("img-tab-hidden"); return; }
+    _urlTimer = setTimeout(function () { showCrop(src); }, 600);
   });
 
   fileInput.addEventListener("change", function () { handleFile(this.files[0]); });
