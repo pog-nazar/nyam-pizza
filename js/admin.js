@@ -132,50 +132,109 @@ function showPanel() {
 
 /* ── DATA ─────────────────────────────────────────────────── */
 
-/* In-memory cache — populated once from Firestore on panel open */
 var _menuCache = null;
 
 function getData() {
-  return _menuCache !== null
-    ? _menuCache
-    : JSON.parse(JSON.stringify(PIZZAS));
+  return _menuCache !== null ? _menuCache : JSON.parse(JSON.stringify(PIZZAS));
 }
 
-/* Load from Firestore → localStorage → PIZZAS (async, runs once) */
+function saveLocalCache(items) {
+  _menuCache = items;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+}
+
+/* Strips internal _id field before writing to Firestore */
+function itemToDoc(item) {
+  var doc = {};
+  ["name", "category", "price", "weight", "ingredients", "image", "_order"].forEach(function (k) {
+    if (item[k] !== undefined) doc[k] = item[k];
+  });
+  return doc;
+}
+
+function fsWrite(item, onDone) {
+  if (!window.db) return;
+  var doc = itemToDoc(item);
+  var p = item._id
+    ? window.db.collection("menu").doc(item._id).set(doc)
+    : window.db.collection("menu").add(doc).then(function (ref) { item._id = ref.id; });
+  p.then(function () { showToast("Збережено ✓", false); if (onDone) onDone(); })
+   .catch(function (e) { showToast("Помилка: " + (e.code || e.message), true); });
+}
+
+function fsUpdate(item, fields) {
+  if (!window.db || !item._id) return;
+  var update = {};
+  fields.forEach(function (k) { if (item[k] !== undefined) update[k] = item[k]; });
+  window.db.collection("menu").doc(item._id).update(update)
+    .then(function () { showToast("Збережено ✓", false); })
+    .catch(function (e) { showToast("Помилка: " + (e.code || e.message), true); });
+}
+
+function fsDelete(id) {
+  if (!window.db || !id) return;
+  window.db.collection("menu").doc(id).delete()
+    .then(function () { showToast("Видалено ✓", false); })
+    .catch(function (e) { showToast("Помилка: " + (e.code || e.message), true); });
+}
+
+/* Migrate old single-doc structure (menu/items) to per-item docs */
+function migrateOldStructure(oldItems) {
+  var batch = window.db.batch();
+  oldItems.forEach(function (item, i) {
+    var ref  = window.db.collection("menu").doc();
+    var data = Object.assign({}, item, { _order: i * 1000 });
+    delete data._id;
+    batch.set(ref, data);
+    _menuCache[i]._id    = ref.id;
+    _menuCache[i]._order = i * 1000;
+  });
+  batch.delete(window.db.collection("menu").doc("items"));
+  batch.commit()
+    .then(function () { saveLocalCache(_menuCache); })
+    .catch(function (e) { console.error("Migration error:", e); });
+}
+
+/* Load: new per-item structure → migrate old → localStorage → PIZZAS */
 function loadMenuData(callback) {
   function fromFallback() {
     var stored = localStorage.getItem(STORAGE_KEY);
-    _menuCache = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(PIZZAS));
+    var items  = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(PIZZAS));
+    items.forEach(function (it, i) { if (!it._id) it._id = null; if (!it._order) it._order = i * 1000; });
+    _menuCache = items;
     callback();
   }
-  if (window.db) {
-    window.db.collection("menu").doc("items").get()
-      .then(function (doc) {
-        if (doc.exists && Array.isArray(doc.data().data)) {
-          _menuCache = doc.data().data;
-        } else {
-          var stored = localStorage.getItem(STORAGE_KEY);
-          _menuCache = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(PIZZAS));
-        }
-        callback();
-      })
-      .catch(fromFallback);
-  } else {
-    fromFallback();
-  }
-}
 
-function saveData(data) {
-  _menuCache = data;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  if (window.db) {
-    window.db.collection("menu").doc("items").set({ data: data })
-      .then(function () { showToast("Збережено ✓", false); })
-      .catch(function (e) {
-        console.error("Firestore save error:", e);
-        showToast("Помилка збереження: " + (e.code || e.message), true);
+  if (!window.db) { fromFallback(); return; }
+
+  window.db.collection("menu").orderBy("_order").get()
+    .then(function (snapshot) {
+      /* Detect old single-doc structure */
+      if (snapshot.size === 1 && snapshot.docs[0].id === "items") {
+        var oldData = snapshot.docs[0].data();
+        if (Array.isArray(oldData.data)) {
+          _menuCache = oldData.data.map(function (it, i) {
+            return Object.assign({}, it, { _id: null, _order: i * 1000 });
+          });
+          migrateOldStructure(oldData.data);
+          callback();
+          return;
+        }
+      }
+
+      if (snapshot.empty) { fromFallback(); return; }
+
+      var items = [];
+      snapshot.forEach(function (doc) {
+        var it = doc.data();
+        it._id = doc.id;
+        items.push(it);
       });
-  }
+      _menuCache = items;
+      saveLocalCache(items);
+      callback();
+    })
+    .catch(fromFallback);
 }
 
 function showToast(msg, isError) {
@@ -244,8 +303,10 @@ function renderItems() {
   container.querySelectorAll(".item-cat").forEach(function (sel) {
     sel.addEventListener("change", function () {
       var items = getData();
-      items[Number(this.dataset.index)].category = this.value;
-      saveData(items);
+      var idx   = Number(this.dataset.index);
+      items[idx].category = this.value;
+      saveLocalCache(items);
+      fsUpdate(items[idx], ["category"]);
       renderItems();
     });
   });
@@ -298,7 +359,8 @@ function startInlineEdit(el) {
     var items = getData();
     if (val !== "") {
       items[index][field] = (field === "price" || field === "weight") ? Number(val) : val;
-      saveData(items);
+      saveLocalCache(items);
+      fsUpdate(items[index], [field]);
     }
     renderItems();
   }
@@ -341,8 +403,10 @@ function editItem(index) {
 function deleteItem(index) {
   if (!confirm("Видалити цю позицію з меню?")) return;
   var items = getData();
+  var id    = items[index]._id;
   items.splice(index, 1);
-  saveData(items);
+  saveLocalCache(items);
+  fsDelete(id);
   renderItems();
 }
 
@@ -359,7 +423,11 @@ function saveItem(e) {
   }
 
   var weightRaw = Number(form.elements["weight"].value);
+  var items     = getData();
+  var existing  = index >= 0 ? items[index] : null;
   var item = {
+    _id:         existing ? existing._id    : null,
+    _order:      existing ? existing._order : Date.now(),
     name:        name,
     category:    form.elements["category"].value,
     price:       price,
@@ -368,14 +436,14 @@ function saveItem(e) {
     image:       form.elements["image"].value.trim(),
   };
 
-  var items = getData();
   if (index >= 0) {
     items[index] = item;
   } else {
     items.push(item);
   }
 
-  saveData(items);
+  saveLocalCache(items);
+  fsWrite(item);
   renderItems();
   hideForm();
 }
@@ -531,15 +599,15 @@ function initImgModal() {
     var cx = (cropPct.x / 100) * nw, cy = (cropPct.y / 100) * nh;
     var cw = (cropPct.w / 100) * nw, ch = (cropPct.h / 100) * nh;
     try {
-      /* Обмежуємо до 600px — карточки ~400px, запас для 1.5x екранів.
-         Весь документ Firestore (всі позиції) не може перевищити 1MB. */
-      var MAX_W = 600;
+      /* Кожна позиція — окремий документ Firestore (ліміт 1MB кожен).
+         1200px / 0.92 дає ~150-350KB base64 — максимальна якість у безпечному діапазоні. */
+      var MAX_W = 1200;
       var outW  = Math.min(Math.round(cw), MAX_W);
       var outH  = Math.round(outW * ch / cw);
       var canvas = document.createElement("canvas");
       canvas.width = outW; canvas.height = outH;
       canvas.getContext("2d").drawImage(cropImg, cx, cy, cw, ch, 0, 0, outW, outH);
-      return canvas.toDataURL("image/jpeg", 0.78);
+      return canvas.toDataURL("image/jpeg", 0.92);
     } catch (e) { return pending; }
   }
 

@@ -101,22 +101,33 @@ document.addEventListener("click", function (e) {
   e.stopPropagation();
 });
 
-/* Reads menu from Firestore → localStorage → PIZZAS. Returns Promise. */
+/* Reads menu from Firestore (per-item docs) → old single-doc → localStorage → PIZZAS */
 function getMenuData() {
-  if (window.db) {
-    return window.db.collection("menu").doc("items").get()
-      .then(function (doc) {
-        if (doc.exists && Array.isArray(doc.data().data)) return doc.data().data;
-        var stored = localStorage.getItem("nyam-menu");
-        return stored ? JSON.parse(stored) : PIZZAS;
-      })
-      .catch(function () {
-        var stored = localStorage.getItem("nyam-menu");
-        return stored ? JSON.parse(stored) : PIZZAS;
-      });
+  function fallback() {
+    var stored = localStorage.getItem("nyam-menu");
+    return stored ? JSON.parse(stored) : PIZZAS;
   }
-  var stored = localStorage.getItem("nyam-menu");
-  return Promise.resolve(stored ? JSON.parse(stored) : PIZZAS);
+  if (!window.db) return Promise.resolve(fallback());
+
+  return window.db.collection("menu").orderBy("_order").get()
+    .then(function (snapshot) {
+      /* New per-item structure */
+      var docs = snapshot.docs.filter(function (d) { return d.id !== "items"; });
+      if (docs.length > 0) {
+        return docs.map(function (d) {
+          var it = d.data();
+          delete it._id; delete it._order;
+          return it;
+        });
+      }
+      /* Old single-doc structure (during migration) */
+      return window.db.collection("menu").doc("items").get()
+        .then(function (doc) {
+          if (doc.exists && Array.isArray(doc.data().data)) return doc.data().data;
+          return fallback();
+        });
+    })
+    .catch(function () { return fallback(); });
 }
 
 function initMenu() {
