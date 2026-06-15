@@ -530,12 +530,15 @@ function initImgModal() {
     var nw = cropImg.naturalWidth, nh = cropImg.naturalHeight;
     var cx = (cropPct.x / 100) * nw, cy = (cropPct.y / 100) * nh;
     var cw = (cropPct.w / 100) * nw, ch = (cropPct.h / 100) * nh;
-    if (cx === 0 && cy === 0 && cw === nw && ch === nh) return pending;
     try {
+      /* Обмежуємо вихідний розмір до 900px по ширині — Firestore має ліміт 1MB на документ */
+      var MAX_W = 900;
+      var outW  = Math.min(Math.round(cw), MAX_W);
+      var outH  = Math.round(outW * ch / cw);
       var canvas = document.createElement("canvas");
-      canvas.width = Math.round(cw); canvas.height = Math.round(ch);
-      canvas.getContext("2d").drawImage(cropImg, cx, cy, cw, ch, 0, 0, Math.round(cw), Math.round(ch));
-      return canvas.toDataURL("image/jpeg", 0.92);
+      canvas.width = outW; canvas.height = outH;
+      canvas.getContext("2d").drawImage(cropImg, cx, cy, cw, ch, 0, 0, outW, outH);
+      return canvas.toDataURL("image/jpeg", 0.82);
     } catch (e) { return pending; }
   }
 
