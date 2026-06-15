@@ -195,44 +195,51 @@ function migrateOldStructure(oldItems) {
     .catch(function (e) { console.error("Migration error:", e); });
 }
 
-/* Load: new per-item structure → migrate old → localStorage → PIZZAS */
+/* Load: check old single-doc → migrate → new per-item docs → localStorage → PIZZAS */
 function loadMenuData(callback) {
   function fromFallback() {
     var stored = localStorage.getItem(STORAGE_KEY);
     var items  = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(PIZZAS));
-    items.forEach(function (it, i) { if (!it._id) it._id = null; if (!it._order) it._order = i * 1000; });
+    items.forEach(function (it, i) {
+      if (!it._id)    it._id    = null;
+      if (!it._order) it._order = i * 1000;
+    });
     _menuCache = items;
     callback();
   }
 
+  function loadNewStructure() {
+    window.db.collection("menu").orderBy("_order").get()
+      .then(function (snapshot) {
+        if (snapshot.empty) { fromFallback(); return; }
+        var items = [];
+        snapshot.forEach(function (doc) {
+          var it = doc.data();
+          it._id = doc.id;
+          items.push(it);
+        });
+        _menuCache = items;
+        saveLocalCache(items);
+        callback();
+      })
+      .catch(fromFallback);
+  }
+
   if (!window.db) { fromFallback(); return; }
 
-  window.db.collection("menu").orderBy("_order").get()
-    .then(function (snapshot) {
-      /* Detect old single-doc structure */
-      if (snapshot.size === 1 && snapshot.docs[0].id === "items") {
-        var oldData = snapshot.docs[0].data();
-        if (Array.isArray(oldData.data)) {
-          _menuCache = oldData.data.map(function (it, i) {
-            return Object.assign({}, it, { _id: null, _order: i * 1000 });
-          });
-          migrateOldStructure(oldData.data);
-          callback();
-          return;
-        }
+  /* Спочатку перевіряємо старий документ — orderBy виключає його бо нема поля _order */
+  window.db.collection("menu").doc("items").get()
+    .then(function (oldDoc) {
+      if (oldDoc.exists && Array.isArray(oldDoc.data().data)) {
+        var oldItems = oldDoc.data().data;
+        _menuCache = oldItems.map(function (it, i) {
+          return Object.assign({}, it, { _id: null, _order: i * 1000 });
+        });
+        migrateOldStructure(oldItems);
+        callback();
+      } else {
+        loadNewStructure();
       }
-
-      if (snapshot.empty) { fromFallback(); return; }
-
-      var items = [];
-      snapshot.forEach(function (doc) {
-        var it = doc.data();
-        it._id = doc.id;
-        items.push(it);
-      });
-      _menuCache = items;
-      saveLocalCache(items);
-      callback();
     })
     .catch(fromFallback);
 }
