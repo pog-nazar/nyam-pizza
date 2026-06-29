@@ -395,13 +395,19 @@ function initScrollAnimations() {
 
   var observer = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      var delay = (Number(entry.target.dataset.index) || 0) * 100;
-      setTimeout(function () {
-        entry.target.classList.remove("hidden-on-load");
-        entry.target.classList.add("animate-in");
-      }, delay);
-      observer.unobserve(entry.target);
+      var el = entry.target;
+      if (entry.isIntersecting) {
+        var delay = (Number(el.dataset.index) || 0) * 100;
+        el.classList.remove("animate-in");
+        el.classList.add("hidden-on-load");
+        setTimeout(function () {
+          el.classList.remove("hidden-on-load");
+          el.classList.add("animate-in");
+        }, delay);
+      } else {
+        el.classList.remove("animate-in");
+        el.classList.add("hidden-on-load");
+      }
     });
   }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
