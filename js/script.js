@@ -164,7 +164,7 @@ function initMenu() {
       card.dataset.index    = i;
       card.dataset.category = pizza.category;
       card.innerHTML =
-        '<img src="' + pizza.image + '" class="pizza-image" alt="' + pizza.name + '" loading="lazy">' +
+        (pizza.image ? '<img src="' + pizza.image + '" class="pizza-image" alt="' + pizza.name + '" loading="lazy">' : '') +
         '<div class="pizza-content">' +
           '<h3 class="pizza-title">' + pizza.name + '</h3>' +
           '<div class="ingredients-wrap">' +
@@ -270,6 +270,9 @@ function initCatalogFilter() {
     currentCategory = btn.dataset.category;
     currentPage     = 1;
     updateView();
+    if (window.matchMedia("(max-width: 768px)").matches) {
+      document.querySelector(".catalog-content").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   });
 
   if (paginEl) {
