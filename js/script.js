@@ -3,22 +3,22 @@
    ============================================================ */
 const PIZZAS = [
   /* Піци */
-  { name: "Маргарита",        ingredients: "Соус томатний, моцарела, базилік, оливкова олія",                        price: 210, weight: 450, image: "images/pizza/margherita.jpg",     category: "pizza" },
-  { name: "Пепероні",         ingredients: "Соус томатний, салямі пепероні, моцарела, орегано",                      price: 250, weight: 520, image: "images/pizza/pepperoni.jpg",       category: "pizza" },
-  { name: "Капріччоза",       ingredients: "Соус томатний, шинка, гриби, маслини, моцарела",                         price: 260, weight: 530, image: "images/pizza/capricciosa.jpg",     category: "pizza" },
-  { name: "Чотири сири",      ingredients: "Моцарела, дор блю, пармезан, чеддер, соус вершковий",                    price: 290, weight: 500, image: "images/pizza/four_cheese.jpg",     category: "pizza" },
-  { name: "Два сири",         ingredients: "Моцарела, чеддер, соус вершковий, часник, базилік",                      price: 245, weight: 470, image: "images/pizza/two_cheese.jpg",      category: "pizza" },
-  { name: "Анна",             ingredients: "Олія рослинна, спеції, помідор, бекон, курка, бринза, сир",              price: 270, weight: 530, image: "images/pizza/anna.jpg",            category: "pizza" },
-  { name: "Венеція",          ingredients: "Соус томатний, каперси, маслини, в'ялені томати, моцарела",              price: 265, weight: 510, image: "images/pizza/venice.jpg",          category: "pizza" },
-  { name: "Мисливська",       ingredients: "Соус томатний, ковбаски мисливські, бринза, помідор, сир",               price: 280, weight: 540, image: "images/pizza/hunters.jpg",         category: "pizza" },
-  { name: "Сіціліана",        ingredients: "Соус томатний, анчоуси, каперси, маслини, моцарела",                     price: 255, weight: 490, image: "images/pizza/sicilian.jpg",        category: "pizza" },
-  { name: "Сімона",           ingredients: "Соус томатний, шинка, гриби, болгарський перець, кукурудза, моцарела",   price: 275, weight: 560, image: "images/pizza/simone.jpg",          category: "pizza" },
-  { name: "Гавайї",           ingredients: "Соус томатний, шинка, ананас, моцарела",                                 price: 240, weight: 480, image: "images/pizza/hawaii.jpg",          category: "pizza" },
-  { name: "Вегетаріанська",   ingredients: "Соус томатний, броколі, цукіні, болгарський перець, гриби, моцарела",    price: 235, weight: 490, image: "images/pizza/vegetarian.jpg",      category: "pizza" },
-  { name: "Прошуто",          ingredients: "Соус томатний, прошуто, руккола, пармезан, моцарела",                    price: 275, weight: 510, image: "images/pizza/prosciutto.jpg",      category: "pizza" },
-  { name: "Груша-Камамбер",   ingredients: "Соус вершковий, груша, камамбер, волоські горіхи, мед, руккола",         price: 320, weight: 490, image: "images/pizza/pear_camembert.jpg",  category: "pizza" },
-  { name: "Морська",          ingredients: "Соус вершковий, креветки, мідії, кальмар, часник, моцарела",             price: 320, weight: 540, image: "images/pizza/seafood.jpg",         category: "pizza" },
-  { name: "Ням-Ням",          ingredients: "Авторський соус, бекон, курка, гриби, болгарський перець, моцарела",     price: 295, weight: 550, image: "images/pizza/yum_yum.jpg",         category: "pizza" },
+  { name: "Маргарита",        ingredients: "Соус томатний, моцарела, базилік, оливкова олія",                        price: 210, weight: 450, image: "",     category: "pizza" },
+  { name: "Пепероні",         ingredients: "Соус томатний, салямі пепероні, моцарела, орегано",                      price: 250, weight: 520, image: "",       category: "pizza" },
+  { name: "Капріччоза",       ingredients: "Соус томатний, шинка, гриби, маслини, моцарела",                         price: 260, weight: 530, image: "",     category: "pizza" },
+  { name: "Чотири сири",      ingredients: "Моцарела, дор блю, пармезан, чеддер, соус вершковий",                    price: 290, weight: 500, image: "",     category: "pizza" },
+  { name: "Два сири",         ingredients: "Моцарела, чеддер, соус вершковий, часник, базилік",                      price: 245, weight: 470, image: "",      category: "pizza" },
+  { name: "Анна",             ingredients: "Олія рослинна, спеції, помідор, бекон, курка, бринза, сир",              price: 270, weight: 530, image: "",            category: "pizza" },
+  { name: "Венеція",          ingredients: "Соус томатний, каперси, маслини, в'ялені томати, моцарела",              price: 265, weight: 510, image: "",          category: "pizza" },
+  { name: "Мисливська",       ingredients: "Соус томатний, ковбаски мисливські, бринза, помідор, сир",               price: 280, weight: 540, image: "",         category: "pizza" },
+  { name: "Сіціліана",        ingredients: "Соус томатний, анчоуси, каперси, маслини, моцарела",                     price: 255, weight: 490, image: "",        category: "pizza" },
+  { name: "Сімона",           ingredients: "Соус томатний, шинка, гриби, болгарський перець, кукурудза, моцарела",   price: 275, weight: 560, image: "",          category: "pizza" },
+  { name: "Гавайї",           ingredients: "Соус томатний, шинка, ананас, моцарела",                                 price: 240, weight: 480, image: "",          category: "pizza" },
+  { name: "Вегетаріанська",   ingredients: "Соус томатний, броколі, цукіні, болгарський перець, гриби, моцарела",    price: 235, weight: 490, image: "",      category: "pizza" },
+  { name: "Прошуто",          ingredients: "Соус томатний, прошуто, руккола, пармезан, моцарела",                    price: 275, weight: 510, image: "",      category: "pizza" },
+  { name: "Груша-Камамбер",   ingredients: "Соус вершковий, груша, камамбер, волоські горіхи, мед, руккола",         price: 320, weight: 490, image: "",  category: "pizza" },
+  { name: "Морська",          ingredients: "Соус вершковий, креветки, мідії, кальмар, часник, моцарела",             price: 320, weight: 540, image: "",         category: "pizza" },
+  { name: "Ням-Ням",          ingredients: "Авторський соус, бекон, курка, гриби, болгарський перець, моцарела",     price: 295, weight: 550, image: "",         category: "pizza" },
   /* Холодні напої */
   { name: "Coca-Cola",       ingredients: "Газований напій",                                           price:  45, weight: 500, image: "",                        category: "cold-drink"   },
   { name: "Sprite",          ingredients: "Газований напій",                                           price:  45, weight: 500, image: "",                        category: "cold-drink"   },
@@ -39,40 +39,33 @@ const PIZZAS = [
    CONFIG — дані піцерії. Змінюйте тут.
    ============================================================ */
 const CONFIG = {
-  pizzeriaName: "Ням-Ням",
   phone:        "+380501350651",
   phoneDisplay: "+380 50 135 06 51",
-  address:      "вул. Перемоги, 62, Помічна, Кіровоградська область, 27030",
 
   schedule: {
-    openHour:  11,
-    closeHour: 22,
-  },
-
-  socials: {
-    instagram:   "https://www.instagram.com/niamniampizzapomichna",
-    facebook:    "https://www.facebook.com/OmNomnompizza/",
-    viberNumber: "+380501350651",
+    openHour:        9,
+    closeHour:       22,
+    mondayCloseHour: 20,
   },
 
   statusOpen:   "Зараз відкрито",
-  statusClosed: "Закрито. Відкриємось о 11:00",
+  statusClosed: "Закрито. Відкриємось о 9:00",
 };
 
 /* ============================================================
    ІНІЦІАЛІЗАЦІЯ
    ============================================================ */
 document.addEventListener("DOMContentLoaded", function () {
-  initMenu().then(function () {
-    initCatalogFilter();
-    initIngredientsToggle();
-  });
   initBurger();
   initScrollHeader();
   initOrderButtons();
   initOpenStatus();
-  initCopyright();
   initScrollAnimations();
+  initMenu().then(function () {
+    observePizzaCards();
+    initCatalogFilter();
+    initIngredientsToggle();
+  });
 });
 
 /* Expand/collapse ingredients on mobile — hides toggle when text fits */
@@ -128,11 +121,35 @@ function getMenuData() {
     .catch(function () { return fallback(); });
 }
 
+function renderSkeletons(grid) {
+  var limit = Number(grid.dataset.limit) || 9;
+  var count = Math.min(limit, 9);
+  for (var s = 0; s < count; s++) {
+    var sk = document.createElement("div");
+    sk.className = "pizza-skeleton";
+    sk.innerHTML =
+      '<div class="skeleton-shimmer skeleton-image"></div>' +
+      '<div class="skeleton-content">' +
+        '<div class="skeleton-shimmer skeleton-line" style="width:65%;height:22px"></div>' +
+        '<div class="skeleton-shimmer skeleton-line" style="width:100%;height:14px"></div>' +
+        '<div class="skeleton-shimmer skeleton-line" style="width:80%;height:14px;margin-bottom:24px"></div>' +
+        '<div style="display:flex;justify-content:space-between;align-items:center">' +
+          '<div class="skeleton-shimmer skeleton-line" style="width:30%;height:26px;margin:0"></div>' +
+          '<div class="skeleton-shimmer skeleton-line" style="width:36%;height:40px;margin:0;border-radius:10px"></div>' +
+        '</div>' +
+      '</div>';
+    grid.appendChild(sk);
+  }
+}
+
 function initMenu() {
   var grid = document.querySelector(".menu-grid");
   if (!grid) return Promise.resolve();
 
+  renderSkeletons(grid);
+
   return getMenuData().then(function (items) {
+    grid.querySelectorAll(".pizza-skeleton").forEach(function (sk) { sk.remove(); });
     var cat = grid.dataset.category;
     if (cat) items = items.filter(function (p) { return p.category === cat; });
 
@@ -362,11 +379,12 @@ function initOpenStatus() {
   if (!el) return;
 
   function update() {
-    var now    = new Date();
-    var mins   = now.getHours() * 60 + now.getMinutes();
-    var open   = CONFIG.schedule.openHour  * 60;
-    var close  = CONFIG.schedule.closeHour * 60;
-    var isOpen = mins >= open && mins < close;
+    var now      = new Date();
+    var day      = now.getDay(); /* 1 = понеділок */
+    var mins     = now.getHours() * 60 + now.getMinutes();
+    var open     = CONFIG.schedule.openHour * 60;
+    var closeHour = day === 1 ? CONFIG.schedule.mondayCloseHour : CONFIG.schedule.closeHour;
+    var isOpen   = mins >= open && mins < closeHour * 60;
 
     el.textContent = isOpen ? CONFIG.statusOpen : CONFIG.statusClosed;
     el.style.color = isOpen ? "#7FFF6A" : "#FFB84D";
@@ -376,40 +394,46 @@ function initOpenStatus() {
   setInterval(update, 60000);
 }
 
-function initCopyright() {
-  var el = document.getElementById("copyright");
-  if (!el) return;
-  el.textContent = "Copyright © " + new Date().getFullYear() +
-    " " + CONFIG.pizzeriaName + ". Всі права захищені.";
+var _scrollObserver = null;
+
+function _observeAnimCard(el, index) {
+  el.dataset.animIndex = index;
+  el.classList.add("hidden-on-load");
+  if (_scrollObserver) _scrollObserver.observe(el);
 }
 
 function initScrollAnimations() {
-  var cards = document.querySelectorAll(".benefit-card, .pizza-card, .review-card");
-  cards.forEach(function (el) { el.classList.add("hidden-on-load"); });
+  var isCatalog = !!document.querySelector(".catalog-filter");
 
-  [".benefit-card", ".pizza-card", ".review-card"].forEach(function (sel) {
-    document.querySelectorAll(sel).forEach(function (el, i) {
-      el.dataset.index = i;
-    });
-  });
-
-  var observer = new IntersectionObserver(function (entries) {
+  _scrollObserver = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       var el = entry.target;
       if (entry.isIntersecting) {
-        var delay = (Number(el.dataset.index) || 0) * 100;
-        el.classList.remove("animate-in");
-        el.classList.add("hidden-on-load");
+        var delay = (Number(el.dataset.animIndex) || 0) * 100;
         setTimeout(function () {
           el.classList.remove("hidden-on-load");
           el.classList.add("animate-in");
+          if (isCatalog) _scrollObserver.unobserve(el);
         }, delay);
-      } else {
+      } else if (!isCatalog) {
         el.classList.remove("animate-in");
         el.classList.add("hidden-on-load");
       }
     });
   }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-  cards.forEach(function (el) { observer.observe(el); });
+  [".benefit-card", ".review-card"].forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el, i) {
+      _observeAnimCard(el, i);
+    });
+  });
 }
+
+function observePizzaCards() {
+  requestAnimationFrame(function () {
+    document.querySelectorAll(".pizza-card").forEach(function (el, i) {
+      _observeAnimCard(el, i);
+    });
+  });
+}
+

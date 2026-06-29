@@ -425,7 +425,7 @@ function saveItem(e) {
   var price = Number(form.elements["price"].value);
 
   if (!name || !price) {
-    alert("Заповніть назву та ціну");
+    showToast("Заповніть назву та ціну", true);
     return;
   }
 
